@@ -1,0 +1,50 @@
+apply plugin: 'java'
+sourceSets {
+  main {
+    java { srcDirs = ["src"] }
+    resources { srcDirs = ["config"] }
+  }
+
+  test {
+    java { srcDirs = ["tst"] }
+    resources { srcDirs = [] }
+  }
+}
+
+test {
+  useTestNG()
+  forkEvery = 5
+  maxParallelForks = 5
+  reports.junitXml.enabled = false
+}
+
+compileJava {
+  options.compilerArgs = ["-Xlint:unchecked", "-Xlint:deprecation", "-Xlint:cast"]
+  options.encoding = "utf-8"
+}
+
+repositories {
+  mavenCentral()
+}
+
+dependencies {
+  compile 'ch.qos.logback:logback-classic:1.1.7'
+  compile "com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider:2.8.1"
+  compile 'com.google.guava:guava:19.0'
+  compile "org.glassfish.jersey.containers:jersey-container-servlet:2.23.2"
+  compile "org.glassfish.jersey.containers:jersey-container-grizzly2-http:2.23.2"
+  compile "org.glassfish.jersey.media:jersey-media-json-jackson:2.23.2"
+  testCompile 'org.testng:testng:6.8'
+}
+
+apply plugin:'application'
+mainClassName = "com.very.hard.service.Main"
+
+run {
+  standardInput = System.in
+}
+
+jar {
+  baseName = 'hard-service'
+  version =  '0.0.1'
+}
